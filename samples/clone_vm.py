@@ -11,6 +11,10 @@ from pyVim.connect import SmartConnect, Disconnect
 import atexit
 import argparse
 import getpass
+import ssl
+
+sslContext = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+sslContext.verify_mode = ssl.CERT_NONE
 
 
 def get_args():
@@ -200,7 +204,8 @@ def main():
         host=args.host,
         user=args.user,
         pwd=args.password,
-        port=args.port)
+        port=args.port,
+        sslContext=sslContext)
     # disconnect this thing
     atexit.register(Disconnect, si)
 
